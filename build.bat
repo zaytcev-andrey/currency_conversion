@@ -6,4 +6,5 @@ pushd %VISUAL_STUDIO_PATH%
 call vcvarsall x86
 popd
 
+call clean.bat
 msbuild.exe currency_conversion.sln /t:Build /p:Configuration=Debug;Platform=x86
