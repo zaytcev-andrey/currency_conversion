@@ -5,6 +5,9 @@
 #include <string>
 #include <exception>
 
+namespace currency_convertion
+{
+
 class Instrument
 {
 public:
@@ -15,8 +18,8 @@ public:
         , RatioType bid
         , RatioType ask )
         : name_( name )
-        , baseCurrencyName_( ExtractFirstCurrency( name ) )
-        , qoutedCurrencyName_( ExtractSecondCurrency( name ) )
+        , baseCurrencyName_( details::ExtractFirstCurrency( name ) )
+        , qoutedCurrencyName_( details::ExtractSecondCurrency( name ) )
         , bid_( bid )
         , ask_( ask )
     {
@@ -59,3 +62,5 @@ private:
     RatioType bid_;
     RatioType ask_;
 };
+
+}

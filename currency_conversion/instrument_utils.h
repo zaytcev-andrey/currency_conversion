@@ -10,7 +10,7 @@ inline std::pair< DirectedInstrument, DirectedInstrument >
 SplitInstrument( const Instrument& instrument )
 {
     DirectedInstrument straight( instrument.GetName(), instrument.GetBid() );
-    DirectedInstrument reverse( ReverseInstrumentName( instrument.GetName() ), instrument.GetAsk() );
+    DirectedInstrument reverse( ReverseInstrumentName( instrument.GetName() ), 1 / instrument.GetAsk() );
 
     return std::make_pair( straight, reverse );
 }

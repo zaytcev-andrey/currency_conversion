@@ -12,13 +12,18 @@
 #include <boost/graph/visitors.hpp>
 #include <boost/array.hpp>
 
+namespace currency_convertion
+{
+namespace details
+{ 
+
 template <class PredecessorMap, class Tag>
-class path_recorder : public boost::predecessor_recorder< PredecessorMap, Tag >
+class PathRecorder : public boost::predecessor_recorder< PredecessorMap, Tag >
 {
 public:
 
     typedef Tag event_filter;
-    path_recorder( PredecessorMap pa, std::vector< bool >& marked )
+    PathRecorder( PredecessorMap pa, std::vector< bool >& marked )
         : predecessor_recorder( pa )
         , marked_( marked )
     {
@@ -34,9 +39,11 @@ private:
 };
 
 template <class PredecessorMap, class Tag>
-path_recorder<PredecessorMap, Tag>
-make_path_recorder( PredecessorMap pa, Tag, std::vector< bool >& marked ) {
-    return path_recorder<PredecessorMap, Tag>( pa, marked );
+PathRecorder<PredecessorMap, Tag>
+MakePathRecorder( PredecessorMap pa, Tag, std::vector< bool >& marked ) {
+    return PathRecorder<PredecessorMap, Tag>( pa, marked );
+}
+
 }
 
 template < class Graph >
@@ -66,14 +73,14 @@ public:
         }
 
         std::vector< Vertex > path_to_vertex;
-        int p = vertexTo;
+        Vertex p = vertexTo;
         while ( p != vertexFrom )
         {
             path_to_vertex.push_back( p );
-            std::cout << p << '\n';
+            // std::cout << p << '\n';
             p = predecessors_[ vertexFrom ][p];
         }
-        std::cout << p << '\n';
+        // std::cout << p << '\n';
         path_to_vertex.push_back( p );
         std::reverse( path_to_vertex.begin(), path_to_vertex.end() );
 
@@ -91,7 +98,7 @@ private:
             boost::breadth_first_search( graph_, v,
                 boost::visitor(
                     boost::make_bfs_visitor(
-                        make_path_recorder( &predecessors_[ v ][ 0 ],
+                        details::MakePathRecorder( &predecessors_[ v ][ 0 ],
                             boost::on_tree_edge(), marked_[ v ] ) ) ) );
         } );
     }
@@ -105,3 +112,5 @@ private:
     std::vector< std::vector< typename boost::graph_traits< Graph >::vertex_descriptor > > predecessors_;
     std::vector< std::vector< bool > > marked_;
 };
+
+}

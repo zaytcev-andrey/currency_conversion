@@ -2,6 +2,11 @@
 
 #include <string>
 
+namespace currency_convertion
+{
+namespace details
+{
+
 inline std::string ExtractFirstCurrency( const std::string& instrumentName )
 {
     const auto found = instrumentName.find_first_of( '/' );
@@ -45,4 +50,7 @@ inline std::string ReverseInstrumentName( const std::string& instrumentName )
 inline std::string MergeInstrumentNames( const std::string& nameFirst, const std::string& nameSecond )
 {
     return nameFirst + "/" + nameSecond;
+}
+
+}
 }

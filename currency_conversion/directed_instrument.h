@@ -4,6 +4,9 @@
 
 #include <string>
 
+namespace currency_convertion
+{
+
 class DirectedInstrument
 {
 public:
@@ -11,8 +14,8 @@ public:
         const std::string& name
         , double ratio )
         : name_( name )
-        , sourceCurrencyName_( ExtractFirstCurrency( name ) )
-        , destCurrencyName_( ExtractSecondCurrency( name ) )
+        , sourceCurrencyName_( details::ExtractFirstCurrency( name ) )
+        , destCurrencyName_( details::ExtractSecondCurrency( name ) )
         , ratio_( ratio )
     {
     }
@@ -43,3 +46,15 @@ private:
     std::string destCurrencyName_;
     double ratio_;
 };
+
+template< class Instrument >
+std::pair< DirectedInstrument, DirectedInstrument >
+SplitInstrument( Instrument&& instrument )
+{
+    DirectedInstrument straight( instrument.GetName(), instrument.GetBid() );
+    DirectedInstrument reverse( details::ReverseInstrumentName( instrument.GetName() ), 1 / instrument.GetAsk() );
+
+    return std::make_pair( std::move( straight ), std::move( reverse ) );
+}
+
+}
